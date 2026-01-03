@@ -502,7 +502,7 @@
                                 </div>
                                 <div class="detail-item">
                                     <div class="detail-label">Blood Group</div>
-                                    <div class="detail-value" id="previewBloodGroup" style="color: #e53935; font-weight: 700;">-</div>
+                                    <div class="detail-value blood-group-preview" id="previewBloodGroup">-</div>
                                 </div>
                                 <div class="detail-item">
                                     <div class="detail-label">Urgency</div>
@@ -635,6 +635,157 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        // Form Tab Switching
+        function setupFormTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            const formSections = document.querySelectorAll('.form-section');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabName = tab.dataset.tab;
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Show corresponding section
+                    formSections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === `${tabName}-section`) {
+                            section.classList.add('active');
+                        }
+                    });
+                    
+                    // Update preview if on payment section
+                    if (tabName === 'payment') {
+                        updateRequestPreview();
+                    }
+                });
+            });
+        }
+
+        // Form Navigation
+        function setupFormNavigation() {
+            // Next buttons
+            document.querySelectorAll('.next-tab').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const nextTab = button.dataset.next;
+                    
+                    if (validateCurrentSection()) {
+                        document.querySelector(`.tab[data-tab="${nextTab}"]`).click();
+                    }
+                });
+            });
+            
+            // Previous buttons
+            document.querySelectorAll('.prev-tab').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const prevTab = button.dataset.prev;
+                    document.querySelector(`.tab[data-tab="${prevTab}"]`).click();
+                });
+            });
+        }
+
+        function validateCurrentSection() {
+            const activeSection = document.querySelector('.form-section.active');
+            const requiredInputs = activeSection.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredInputs.forEach(input => {
+                if (!input.value.trim()) {
+                    isValid = false;
+                    input.style.borderColor = '#e53935';
+                } else {
+                    input.style.borderColor = '#ddd';
+                }
+            });
+            
+            if (!isValid) {
+                alert('Please fill in all required fields before proceeding.');
+            }
+            
+            return isValid;
+        }
+
+        function updateRequestPreview() {
+            document.getElementById('previewPatientName').textContent = 
+                document.getElementById('patientName').value || '-';
+            
+            document.getElementById('previewOrganType').textContent = 
+                document.getElementById('organType').value || '-';
+            
+            document.getElementById('previewBloodGroup').textContent = 
+                document.getElementById('patientBloodGroup').value || '-';
+            
+            const urgency = document.getElementById('urgencyLevel').value;
+            document.getElementById('previewUrgency').textContent = urgency || '-';
+            
+            const urgencyBadge = document.getElementById('urgencyBadge');
+            if (urgency === 'critical' || urgency === 'urgent') {
+                urgencyBadge.style.display = 'inline-flex';
+                urgencyBadge.innerHTML = urgency === 'critical' ? 
+                    '<i class="fas fa-bolt"></i> CRITICAL' : 
+                    '<i class="fas fa-clock"></i> URGENT';
+            } else {
+                urgencyBadge.style.display = 'none';
+            }
+        }
+
+        function setupFormSubmission() {
+            const form = document.getElementById('organRequestForm');
+            
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    if (validateCurrentSection()) {
+                        // Generate reference ID
+                        const referenceId = 'ORG-' + new Date().getFullYear() + '-' + 
+                            Math.floor(100000 + Math.random() * 900000);
+                        document.getElementById('referenceId').textContent = referenceId;
+                        
+                        // Show confirmation
+                        document.querySelectorAll('.form-section').forEach(section => {
+                            section.classList.remove('active');
+                        });
+                        document.getElementById('confirmation-section').style.display = 'block';
+                        
+                        // Scroll to top
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
+            }
+        }
+
+        function populateFormFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const organId = urlParams.get('organ');
+            
+            if (organId) {
+                const organMap = {
+                    '1': 'heart',
+                    '2': 'kidney',
+                    '3': 'liver',
+                    '4': 'lungs',
+                    '5': 'pancreas',
+                    '6': 'cornea'
+                };
+                if (organMap[organId]) {
+                    document.getElementById('organType').value = organMap[organId];
+                }
+            }
+        }
+
+        // Initialize the form when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setupFormTabs();
+            setupFormNavigation();
+            setupFormSubmission();
+            populateFormFromURL();
+        });
+    </script>
 </body>
 </html>
