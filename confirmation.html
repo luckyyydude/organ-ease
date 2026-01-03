@@ -89,11 +89,6 @@
             color: #333;
         }
 
-        .blood-group {
-            color: #e53935;
-            font-weight: 700;
-        }
-
         .confirmation-actions {
             background: #f8f9fa;
             padding: 2rem;
@@ -101,25 +96,29 @@
             display: flex;
             gap: 1rem;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         .timeline {
             margin: 2rem 0;
-            padding: 2rem;
-            background: #f8f9fa;
-            border-radius: 10px;
+            position: relative;
+        }
+
+        .timeline:before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #1a237e;
         }
 
         .timeline-item {
             display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 0;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .timeline-item:last-child {
-            border-bottom: none;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
         }
 
         .timeline-icon {
@@ -135,11 +134,15 @@
 
         .timeline-content {
             flex: 1;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
         }
 
         .timeline-time {
             color: #666;
             font-size: 0.9rem;
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
@@ -154,7 +157,9 @@
             <ul class="nav-menu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="dashboard.html">Available Organs</a></li>
+                <li><a href="requested-organs.html">Requested Organs</a></li>
                 <li><a href="request.html">Request Organ</a></li>
+                <li><a href="blood-camp.html">Blood Camps</a></li>
                 <li><a href="index.html#contact">Contact</a></li>
             </ul>
         </div>
@@ -194,7 +199,7 @@
                             </div>
                             <div class="info-item">
                                 <span class="label">Blood Group:</span>
-                                <span class="value blood-group">A+</span>
+                                <span class="value" style="color: #e53935; font-weight: 700;">A+</span>
                             </div>
                             <div class="info-item">
                                 <span class="label">Weight:</span>
@@ -211,7 +216,7 @@
                             </div>
                             <div class="info-item">
                                 <span class="label">Donor Blood Group:</span>
-                                <span class="value blood-group">A+</span>
+                                <span class="value" style="color: #e53935; font-weight: 700;">A+</span>
                             </div>
                             <div class="info-item">
                                 <span class="label">Donor Age:</span>
@@ -280,8 +285,9 @@
                                 <i class="fas fa-plus-circle"></i>
                             </div>
                             <div class="timeline-content">
-                                <strong>Request Submitted</strong>
                                 <div class="timeline-time">October 15, 2023 14:30 EST</div>
+                                <strong>Request Submitted</strong>
+                                <p>Organ request submitted by City General Hospital</p>
                             </div>
                         </div>
                         <div class="timeline-item">
@@ -289,8 +295,9 @@
                                 <i class="fas fa-credit-card"></i>
                             </div>
                             <div class="timeline-content">
-                                <strong>Payment Processed</strong>
                                 <div class="timeline-time">October 15, 2023 14:35 EST</div>
+                                <strong>Payment Processed</strong>
+                                <p>Token payment processed successfully</p>
                             </div>
                         </div>
                         <div class="timeline-item">
@@ -298,8 +305,9 @@
                                 <i class="fas fa-bell"></i>
                             </div>
                             <div class="timeline-content">
-                                <strong>Notification Sent to Procurement Center</strong>
                                 <div class="timeline-time">October 15, 2023 14:40 EST</div>
+                                <strong>Notification Sent to Procurement Center</strong>
+                                <p>Procurement center notified for review</p>
                             </div>
                         </div>
                         <div class="timeline-item">
@@ -307,8 +315,9 @@
                                 <i class="fas fa-clock"></i>
                             </div>
                             <div class="timeline-content">
-                                <strong>Awaiting Center Confirmation</strong>
                                 <div class="timeline-time">Pending</div>
+                                <strong>Awaiting Center Confirmation</strong>
+                                <p>Procurement center is reviewing the request</p>
                             </div>
                         </div>
                     </div>
@@ -316,27 +325,40 @@
 
                 <!-- Actions for Procurement Center -->
                 <div class="confirmation-actions">
-                    <button class="btn btn-secondary" onclick="alert('Medical team contacted for verification')">
+                    <button class="btn btn-secondary" onclick="contactMedicalTeam()">
                         <i class="fas fa-phone"></i> Contact Medical Team
                     </button>
-                    <button class="btn btn-secondary" onclick="alert('Transport logistics displayed')">
+                    <button class="btn btn-secondary" onclick="viewTransport()">
                         <i class="fas fa-ambulance"></i> View Transport Details
                     </button>
                     <button class="btn btn-primary" onclick="confirmRequest()">
                         <i class="fas fa-check-double"></i> Confirm & Release Organ
                     </button>
-                    <button class="btn btn-secondary" style="background: #e53935;" onclick="alert('Cancellation reason requested')">
+                    <button class="btn btn-secondary" style="background: #e53935;" onclick="rejectRequest()">
                         <i class="fas fa-times"></i> Reject Request
                     </button>
                 </div>
             </div>
 
             <!-- Important Notes -->
-            <div class="alert alert-warning" style="margin-top: 2rem;">
-                <i class="fas fa-exclamation-triangle"></i>
-                <div>
-                    <strong>Important:</strong> Once confirmed, the organ will be marked as allocated and transport logistics will be initiated immediately. 
-                    Please verify all compatibility details before confirmation.
+            <div class="instructions" style="margin-top: 2rem;">
+                <h3><i class="fas fa-exclamation-triangle"></i> Important Information</h3>
+                <div class="instructions-grid">
+                    <div class="instruction-card">
+                        <i class="fas fa-clock"></i>
+                        <h4>Time Critical</h4>
+                        <p>Organ preservation time is limited - act quickly</p>
+                    </div>
+                    <div class="instruction-card">
+                        <i class="fas fa-user-md"></i>
+                        <h4>Medical Verification</h4>
+                        <p>Verify all medical compatibility before release</p>
+                    </div>
+                    <div class="instruction-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h4>Secure Transfer</h4>
+                        <p>Follow secure transport protocols</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -362,10 +384,24 @@
     </footer>
 
     <script>
+        function contactMedicalTeam() {
+            alert('Medical team contact information:\n\nDr. Sarah Johnson\n(555) 123-4567\nCardiology Department\nCity General Hospital');
+        }
+
+        function viewTransport() {
+            alert('Transport Details:\n\nMode: Medical Air Transport\nEstimated Time: 2 hours 30 minutes\nDeparture: National Transplant Center\nArrival: City General Hospital\nLogistics Partner: MedTrans Air Services');
+        }
+
         function confirmRequest() {
             if (confirm('Are you sure you want to confirm and release this organ for transfer? This action cannot be undone.')) {
-                alert('Organ confirmed for transfer! Transport logistics have been initiated.');
-                // In real app, update status in backend
+                alert('✅ Organ confirmed for transfer! Transport logistics have been initiated.\n\nNotification sent to: City General Hospital\nTransport scheduled for immediate departure\nMedical team alerted for reception');
+            }
+        }
+
+        function rejectRequest() {
+            const reason = prompt('Please enter reason for rejection:');
+            if (reason) {
+                alert(`Request rejected. Reason: ${reason}\n\nHospital has been notified.`);
             }
         }
     </script>

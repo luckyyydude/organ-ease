@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avaible requests - OrganEase</title>
+    <title>Requested Organs - OrganEase</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -176,32 +176,44 @@
             margin-bottom: 1rem;
         }
 
-        .stats-cards {
+        .details-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 2rem;
+            margin: 2rem 0;
         }
 
-        .stat-card {
-            background: white;
+        .detail-card {
+            background: #f8f9fa;
             padding: 1.5rem;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            text-align: center;
-            border-top: 4px solid #e53935;
         }
 
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
+        .detail-card h3 {
             color: #1a237e;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0e0e0;
         }
 
-        .stat-label {
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .label {
             color: #666;
-            font-size: 0.9rem;
+        }
+
+        .value {
+            font-weight: 600;
+            color: #333;
         }
 
         .timeline {
@@ -251,6 +263,22 @@
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
         }
+
+        .request-details {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .transport-map {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
@@ -267,7 +295,7 @@
                 <li><a href="requested-organs.html" class="active">Requested Organs</a></li>
                 <li><a href="request.html">Request Organ</a></li>
                 <li><a href="blood-camp.html">Blood Camps</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -282,7 +310,7 @@
             </div>
 
             <!-- Statistics -->
-            <div class="stats-cards">
+            <div class="stats">
                 <div class="stat-card">
                     <div class="stat-number" id="totalRequests">8</div>
                     <div class="stat-label">Total Requests</div>
@@ -331,7 +359,7 @@
                 </table>
             </div>
 
-            <!-- Request Details (Expanded View) -->
+            <!-- Request Details (Initially hidden) -->
             <div class="request-details" id="requestDetails" style="display: none;">
                 <h2><i class="fas fa-info-circle"></i> Request Details</h2>
                 <div class="details-grid">
@@ -347,7 +375,7 @@
                         </div>
                         <div class="detail-item">
                             <span class="label">Blood Group:</span>
-                            <span class="value blood-group">A+</span>
+                            <span class="value" style="color: #e53935; font-weight: 700;">A+</span>
                         </div>
                     </div>
                     <div class="detail-card">
@@ -414,7 +442,7 @@
             </div>
 
             <!-- Live Transport Map -->
-            <div class="transport-map" style="margin-top: 3rem; display: none;" id="transportMap">
+            <div class="transport-map" style="display: none;" id="transportMap">
                 <h2><i class="fas fa-map-marker-alt"></i> Live Transport Tracking</h2>
                 <div style="background: #f0f0f0; height: 300px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #666;">
                     <div style="text-align: center;">

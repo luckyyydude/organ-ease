@@ -103,6 +103,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (currentPage === 'index.html' || currentPage === '') {
         initializeHomepage();
     }
+    
+    if (currentPage === 'requested-organs.html') {
+        initializeRequestedOrgans();
+    }
+    
+    if (currentPage === 'blood-camp.html') {
+        initializeBloodCamp();
+    }
 });
 
 // Dashboard functionality
@@ -144,7 +152,7 @@ function displayOrgans(filteredOrgans = organs) {
         <div class="organ-card">
             <div class="organ-header">
                 <div class="organ-type">${organ.organ}</div>
-                <div class="organ-status ${organ.urgency}">
+                <div class="organ-status ${organ.urgency}" style="background: ${organ.urgency === 'critical' ? '#e53935' : organ.urgency === 'urgent' ? '#ff9800' : '#4caf50'}">
                     ${organ.urgency === 'critical' ? 'CRITICAL' : organ.urgency.toUpperCase()}
                 </div>
             </div>
@@ -181,7 +189,7 @@ function displayOrgans(filteredOrgans = organs) {
                         '<span style="color: #666;"><i class="fas fa-clock"></i> Listed: ' + organ.listedAt + '</span>'
                     }
                 </div>
-                <a href="request.html?organ=${organ.id}" class="btn btn-primary">
+                <a href="request.html?organ=${organ.id}" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
                     <i class="fas fa-plus-circle"></i> Request
                 </a>
             </div>
@@ -190,20 +198,7 @@ function displayOrgans(filteredOrgans = organs) {
 }
 
 function setupFilters() {
-    const organTypeFilter = document.getElementById('organType');
-    const bloodGroupFilter = document.getElementById('bloodGroup');
-    const centerFilter = document.getElementById('center');
-    
-    // Populate filters with unique values
-    if (organTypeFilter) {
-        const organTypes = [...new Set(organs.map(organ => organ.organ.toLowerCase()))];
-        // Options are already set in HTML
-    }
-    
-    if (bloodGroupFilter) {
-        const bloodGroups = [...new Set(organs.map(organ => organ.bloodGroup))];
-        // Options are already set in HTML
-    }
+    // Filters are already set up in HTML
 }
 
 function filterOrgans() {
@@ -418,89 +413,36 @@ function populateFormFromURL() {
     }
 }
 
+// Requested Organs functionality
+function initializeRequestedOrgans() {
+    // This is handled in the HTML file's inline script
+    console.log('Requested organs page initialized');
+}
+
+// Blood Camp functionality
+function initializeBloodCamp() {
+    // This is handled in the HTML file's inline script
+    console.log('Blood camp page initialized');
+}
+
 // Homepage functionality
 function initializeHomepage() {
     // Add any homepage-specific functionality here
     console.log('OrganEase homepage loaded');
-}
-
-// Utility function for generating sample data
-function generateSampleOrgans(count) {
-    const organTypes = ['Heart', 'Kidney', 'Liver', 'Lungs', 'Pancreas', 'Cornea', 'Intestine'];
-    const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
-    const centers = [
-        'City General Hospital',
-        'National Transplant Center',
-        'Metro Medical Center',
-        'University Medical Center',
-        'Regional Health Institute'
-    ];
-    const locations = ['New York', 'Chicago', 'Los Angeles', 'Houston', 'Miami'];
     
-    const sampleOrgans = [];
-    
-    for (let i = 0; i < count; i++) {
-        sampleOrgans.push({
-            id: i + 1,
-            organ: organTypes[Math.floor(Math.random() * organTypes.length)],
-            bloodGroup: bloodGroups[Math.floor(Math.random() * bloodGroups.length)],
-            age: Math.floor(Math.random() * 50) + 18,
-            center: centers[Math.floor(Math.random() * centers.length)],
-            contact: `contact${i}@hospital.org`,
-            status: 'available',
-            urgency: ['critical', 'urgent', 'standard'][Math.floor(Math.random() * 3)],
-            preservationTime: `${Math.floor(Math.random() * 72)} hours remaining`,
-            compatibility: [bloodGroups[Math.floor(Math.random() * bloodGroups.length)]],
-            location: locations[Math.floor(Math.random() * locations.length)],
-            listedAt: new Date(Date.now() - Math.random() * 86400000).toISOString().replace('T', ' ').substring(0, 16)
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
         });
-    }
-    
-    return sampleOrgans;
+    });
 }
-
-
-
-// Add to the end of your existing script.js file
-
-// Blood Camp functions
-function initBloodCampPage() {
-    // Initialize map if on blood camp page
-    if (document.getElementById('bloodCampMap')) {
-        // Map initialization code from blood-camp.html
-        console.log('Blood camp page initialized');
-    }
-}
-
-// Requested Organs functions
-function initRequestedOrgansPage() {
-    // Initialize requested organs page
-    if (document.getElementById('requestsTable')) {
-        console.log('Requested organs page initialized');
-    }
-}
-
-// Update the main initialization function
-document.addEventListener('DOMContentLoaded', function() {
-    const currentPage = window.location.pathname.split('/').pop();
-    
-    if (currentPage === 'dashboard.html' || currentPage === '') {
-        initializeDashboard();
-    }
-    
-    if (currentPage === 'request.html') {
-        initializeRequestForm();
-    }
-    
-    if (currentPage === 'index.html' || currentPage === '') {
-        initializeHomepage();
-    }
-    
-    if (currentPage === 'blood-camp.html') {
-        initBloodCampPage();
-    }
-    
-    if (currentPage === 'requested-organs.html') {
-        initRequestedOrgansPage();
-    }
-});
