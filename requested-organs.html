@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaible requests - OrganEase</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .requests-container {
+            padding: 3rem 0;
+            min-height: 80vh;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            color: #1a237e;
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .status-filter {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .status-btn {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid #1a237e;
+            background: white;
+            color: #1a237e;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .status-btn.active,
+        .status-btn:hover {
+            background: #1a237e;
+            color: white;
+        }
+
+        .requests-table-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+
+        .requests-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .requests-table thead {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            color: white;
+        }
+
+        .requests-table th {
+            padding: 1.2rem 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .requests-table tbody tr {
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.3s;
+        }
+
+        .requests-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .requests-table td {
+            padding: 1.2rem 1rem;
+            color: #333;
+        }
+
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .status-confirmed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-transit {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .status-delivered {
+            background: #f5f5f5;
+            color: #616161;
+        }
+
+        .priority-high {
+            color: #e53935;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .priority-medium {
+            color: #ff9800;
+            font-weight: 600;
+        }
+
+        .priority-low {
+            color: #4caf50;
+            font-weight: 600;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-track {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .action-view {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .no-requests {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #666;
+        }
+
+        .no-requests i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            border-top: 4px solid #e53935;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a237e;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .timeline {
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .timeline:before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #1a237e;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .timeline-icon {
+            width: 42px;
+            height: 42px;
+            background: white;
+            border: 2px solid #1a237e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a237e;
+            z-index: 1;
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .timeline-time {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <span>OrganEase</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Available Organs</a></li>
+                <li><a href="requested-organs.html" class="active">Requested Organs</a></li>
+                <li><a href="request.html">Request Organ</a></li>
+                <li><a href="blood-camp.html">Blood Camps</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="requests-container">
+        <div class="container">
+            <!-- Header -->
+            <div class="page-header">
+                <h1><i class="fas fa-list-alt"></i> Requested Organs</h1>
+                <p>Track the status of all organ requests and their progress</p>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalRequests">8</div>
+                    <div class="stat-label">Total Requests</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pendingRequests">3</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="inTransit">2</div>
+                    <div class="stat-label">In Transit</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completed">3</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+            </div>
+
+            <!-- Filter -->
+            <div class="status-filter">
+                <button class="status-btn active" data-status="all">All Requests</button>
+                <button class="status-btn" data-status="pending">Pending</button>
+                <button class="status-btn" data-status="confirmed">Confirmed</button>
+                <button class="status-btn" data-status="transit">In Transit</button>
+                <button class="status-btn" data-status="delivered">Delivered</button>
+            </div>
+
+            <!-- Requests Table -->
+            <div class="requests-table-container">
+                <table class="requests-table">
+                    <thead>
+                        <tr>
+                            <th>Request ID</th>
+                            <th>Patient</th>
+                            <th>Organ</th>
+                            <th>Blood Group</th>
+                            <th>Hospital</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="requestsTable">
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Request Details (Expanded View) -->
+            <div class="request-details" id="requestDetails" style="display: none;">
+                <h2><i class="fas fa-info-circle"></i> Request Details</h2>
+                <div class="details-grid">
+                    <div class="detail-card">
+                        <h3>Patient Information</h3>
+                        <div class="detail-item">
+                            <span class="label">Name:</span>
+                            <span class="value">John Smith</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Age:</span>
+                            <span class="value">45 years</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Blood Group:</span>
+                            <span class="value blood-group">A+</span>
+                        </div>
+                    </div>
+                    <div class="detail-card">
+                        <h3>Organ Details</h3>
+                        <div class="detail-item">
+                            <span class="label">Organ Type:</span>
+                            <span class="value">Heart</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Required By:</span>
+                            <span class="value">24 hours</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Procurement Center:</span>
+                            <span class="value">National Transplant Center</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline -->
+                <div class="timeline">
+                    <h3>Request Timeline</h3>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <i class="fas fa-plus-circle"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-time">Oct 15, 2023 14:30</div>
+                            <strong>Request Submitted</strong>
+                            <p>Organ request submitted by City General Hospital</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-time">Oct 15, 2023 14:45</div>
+                            <strong>Payment Confirmed</strong>
+                            <p>Token payment processed successfully</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-time">Oct 15, 2023 15:30</div>
+                            <strong>Medical Review</strong>
+                            <p>Compatibility verified by medical team</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-time">Oct 15, 2023 16:15</div>
+                            <strong>In Transit</strong>
+                            <p>Organ dispatched via medical air transport</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Transport Map -->
+            <div class="transport-map" style="margin-top: 3rem; display: none;" id="transportMap">
+                <h2><i class="fas fa-map-marker-alt"></i> Live Transport Tracking</h2>
+                <div style="background: #f0f0f0; height: 300px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #666;">
+                    <div style="text-align: center;">
+                        <i class="fas fa-map" style="font-size: 4rem; margin-bottom: 1rem;"></i>
+                        <p>Live transport tracking map would appear here</p>
+                        <p><small>Integrated with GPS for real-time tracking</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>OrganEase</span>
+                </div>
+                <p class="footer-tagline">Saving lives through efficient organ procurement</p>
+                <div class="footer-info">
+                    <p><i class="fas fa-phone"></i> Emergency Hotline: 1-800-ORGANS-NOW</p>
+                    <p><i class="fas fa-envelope"></i> Email: support@organease.org</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Available 24/7 Nationwide</p>
+                </div>
+                <p class="copyright">© 2023 OrganEase. All medical protocols followed as per national guidelines.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Sample data for requested organs
+        const requests = [
+            {
+                id: "REQ-2023-001",
+                patient: "John Smith",
+                organ: "Heart",
+                bloodGroup: "A+",
+                hospital: "City General Hospital",
+                priority: "high",
+                status: "transit",
+                date: "2023-10-15",
+                eta: "2 hours"
+            },
+            {
+                id: "REQ-2023-002",
+                patient: "Maria Garcia",
+                organ: "Kidney",
+                bloodGroup: "O-",
+                hospital: "Metro Medical",
+                priority: "high",
+                status: "pending",
+                date: "2023-10-15",
+                eta: "Urgent"
+            },
+            {
+                id: "REQ-2023-003",
+                patient: "Robert Chen",
+                organ: "Liver",
+                bloodGroup: "B+",
+                hospital: "University Hospital",
+                priority: "medium",
+                status: "confirmed",
+                date: "2023-10-14",
+                eta: "24 hours"
+            },
+            {
+                id: "REQ-2023-004",
+                patient: "Sarah Johnson",
+                organ: "Lungs",
+                bloodGroup: "AB+",
+                hospital: "Children's Medical",
+                priority: "high",
+                status: "delivered",
+                date: "2023-10-13",
+                eta: "Completed"
+            },
+            {
+                id: "REQ-2023-005",
+                patient: "David Wilson",
+                organ: "Pancreas",
+                bloodGroup: "A-",
+                hospital: "Regional Health",
+                priority: "medium",
+                status: "transit",
+                date: "2023-10-14",
+                eta: "4 hours"
+            }
+        ];
+
+        // Function to render requests
+        function renderRequests(filter = 'all') {
+            const tableBody = document.getElementById('requestsTable');
+            let filteredRequests = requests;
+            
+            if (filter !== 'all') {
+                filteredRequests = requests.filter(req => req.status === filter);
+            }
+            
+            if (filteredRequests.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 3rem;">
+                            <i class="fas fa-inbox" style="font-size: 3rem; color: #ddd; margin-bottom: 1rem; display: block;"></i>
+                            <p>No requests found for this status</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tableBody.innerHTML = filteredRequests.map(request => `
+                <tr>
+                    <td>${request.id}</td>
+                    <td>${request.patient}</td>
+                    <td>${request.organ}</td>
+                    <td><span style="color: #e53935; font-weight: 700;">${request.bloodGroup}</span></td>
+                    <td>${request.hospital}</td>
+                    <td>
+                        ${request.priority === 'high' ? 
+                            '<span class="priority-high"><i class="fas fa-exclamation-circle"></i> HIGH</span>' : 
+                            request.priority === 'medium' ? 
+                            '<span class="priority-medium"><i class="fas fa-clock"></i> MEDIUM</span>' : 
+                            '<span class="priority-low"><i class="fas fa-check-circle"></i> LOW</span>'}
+                    </td>
+                    <td>
+                        ${request.status === 'pending' ? 
+                            '<span class="status-badge status-pending">PENDING</span>' : 
+                         request.status === 'confirmed' ? 
+                            '<span class="status-badge status-confirmed">CONFIRMED</span>' : 
+                         request.status === 'transit' ? 
+                            '<span class="status-badge status-transit">IN TRANSIT</span>' : 
+                            '<span class="status-badge status-delivered">DELIVERED</span>'}
+                    </td>
+                    <td>
+                        <button class="action-btn action-view" onclick="showRequestDetails('${request.id}')">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        ${request.status === 'transit' ? 
+                            '<button class="action-btn action-track" onclick="showTransportMap()">' +
+                            '<i class="fas fa-map-marker-alt"></i> Track</button>' : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Filter functionality
+        document.querySelectorAll('.status-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const status = this.dataset.status;
+                renderRequests(status);
+            });
+        });
+
+        // Show request details
+        function showRequestDetails(requestId) {
+            document.getElementById('requestDetails').style.display = 'block';
+            document.getElementById('transportMap').style.display = 'none';
+            // Scroll to details
+            document.getElementById('requestDetails').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Show transport map
+        function showTransportMap() {
+            document.getElementById('transportMap').style.display = 'block';
+            document.getElementById('requestDetails').style.display = 'none';
+            // Scroll to map
+            document.getElementById('transportMap').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderRequests();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Confirmation - OrganEase</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .confirmation-container {
+            padding: 3rem 0;
+        }
+
+        .confirmation-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .confirmation-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .confirmation-status {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            color: white;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-badge {
+            background: #4caf50;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .confirmation-content {
+            padding: 2.5rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .info-section h3 {
+            color: #1a237e;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: #666;
+        }
+
+        .value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .blood-group {
+            color: #e53935;
+            font-weight: 700;
+        }
+
+        .confirmation-actions {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .timeline {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            background: #1a237e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-time {
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <span>OrganEase</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Available Organs</a></li>
+                <li><a href="request.html">Request Organ</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Confirmation Content -->
+    <section class="confirmation-container">
+        <div class="container">
+            <div class="confirmation-header">
+                <h1>Organ Request Confirmation</h1>
+                <p>Procurement Center: National Transplant Center</p>
+            </div>
+
+            <div class="confirmation-card">
+                <div class="confirmation-status">
+                    <div>
+                        <h2>Heart Transplant Request</h2>
+                        <p>Reference: ORG-2023-876543</p>
+                    </div>
+                    <div class="status-badge">
+                        <i class="fas fa-check-circle"></i> READY FOR CONFIRMATION
+                    </div>
+                </div>
+
+                <div class="confirmation-content">
+                    <div class="info-grid">
+                        <!-- Patient Information -->
+                        <div class="info-section">
+                            <h3><i class="fas fa-user-injured"></i> Patient Details</h3>
+                            <div class="info-item">
+                                <span class="label">Name:</span>
+                                <span class="value">John Smith</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Age:</span>
+                                <span class="value">45 years</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Blood Group:</span>
+                                <span class="value blood-group">A+</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Weight:</span>
+                                <span class="value">78 kg</span>
+                            </div>
+                        </div>
+
+                        <!-- Organ Details -->
+                        <div class="info-section">
+                            <h3><i class="fas fa-lungs"></i> Organ Details</h3>
+                            <div class="info-item">
+                                <span class="label">Organ Type:</span>
+                                <span class="value">Heart</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Donor Blood Group:</span>
+                                <span class="value blood-group">A+</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Donor Age:</span>
+                                <span class="value">32 years</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Preservation Time:</span>
+                                <span class="value">4 hours remaining</span>
+                            </div>
+                        </div>
+
+                        <!-- Hospital Information -->
+                        <div class="info-section">
+                            <h3><i class="fas fa-hospital"></i> Receiving Hospital</h3>
+                            <div class="info-item">
+                                <span class="label">Hospital:</span>
+                                <span class="value">City General Hospital</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Contact:</span>
+                                <span class="value">Dr. Sarah Johnson</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Phone:</span>
+                                <span class="value">(555) 123-4567</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Location:</span>
+                                <span class="value">New York, NY</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Information -->
+                    <div class="info-section">
+                        <h3><i class="fas fa-credit-card"></i> Payment & Logistics</h3>
+                        <div class="info-grid" style="grid-template-columns: repeat(2, 1fr);">
+                            <div>
+                                <div class="info-item">
+                                    <span class="label">Payment Status:</span>
+                                    <span class="value" style="color: #4caf50;">Confirmed ✓</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Amount:</span>
+                                    <span class="value">$5,000.00</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="info-item">
+                                    <span class="label">Transport Required:</span>
+                                    <span class="value">Medical Air Transport</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Estimated Transfer:</span>
+                                    <span class="value">2 hours 30 minutes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Timeline -->
+                    <div class="timeline">
+                        <h3><i class="fas fa-history"></i> Request Timeline</h3>
+                        <div class="timeline-item">
+                            <div class="timeline-icon">
+                                <i class="fas fa-plus-circle"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <strong>Request Submitted</strong>
+                                <div class="timeline-time">October 15, 2023 14:30 EST</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <strong>Payment Processed</strong>
+                                <div class="timeline-time">October 15, 2023 14:35 EST</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <strong>Notification Sent to Procurement Center</strong>
+                                <div class="timeline-time">October 15, 2023 14:40 EST</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon" style="background: #ff9800;">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <strong>Awaiting Center Confirmation</strong>
+                                <div class="timeline-time">Pending</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions for Procurement Center -->
+                <div class="confirmation-actions">
+                    <button class="btn btn-secondary" onclick="alert('Medical team contacted for verification')">
+                        <i class="fas fa-phone"></i> Contact Medical Team
+                    </button>
+                    <button class="btn btn-secondary" onclick="alert('Transport logistics displayed')">
+                        <i class="fas fa-ambulance"></i> View Transport Details
+                    </button>
+                    <button class="btn btn-primary" onclick="confirmRequest()">
+                        <i class="fas fa-check-double"></i> Confirm & Release Organ
+                    </button>
+                    <button class="btn btn-secondary" style="background: #e53935;" onclick="alert('Cancellation reason requested')">
+                        <i class="fas fa-times"></i> Reject Request
+                    </button>
+                </div>
+            </div>
+
+            <!-- Important Notes -->
+            <div class="alert alert-warning" style="margin-top: 2rem;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <strong>Important:</strong> Once confirmed, the organ will be marked as allocated and transport logistics will be initiated immediately. 
+                    Please verify all compatibility details before confirmation.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>OrganEase</span>
+                </div>
+                <p class="footer-tagline">Saving lives through efficient organ procurement</p>
+                <div class="footer-info">
+                    <p><i class="fas fa-phone"></i> Emergency Hotline: 1-800-ORGANS-NOW</p>
+                    <p><i class="fas fa-envelope"></i> Email: support@organease.org</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Available 24/7 Nationwide</p>
+                </div>
+                <p class="copyright">© 2023 OrganEase. All medical protocols followed as per national guidelines.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function confirmRequest() {
+            if (confirm('Are you sure you want to confirm and release this organ for transfer? This action cannot be undone.')) {
+                alert('Organ confirmed for transfer! Transport logistics have been initiated.');
+                // In real app, update status in backend
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Organ - OrganEase</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .request-container {
+            padding: 3rem 0;
+            min-height: 80vh;
+        }
+
+        .request-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .request-header h1 {
+            color: #1a237e;
+            margin-bottom: 1rem;
+        }
+
+        .request-header p {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .request-form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .form-tabs {
+            display: flex;
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 1.2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            color: white;
+            border-bottom: 3px solid #e53935;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab i {
+            margin-right: 8px;
+        }
+
+        .form-section {
+            display: none;
+            padding: 2.5rem;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .form-section h2 {
+            color: #1a237e;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1a237e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group label.required:after {
+            content: "*";
+            color: #e53935;
+            margin-left: 4px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.9rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #1a237e;
+            box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .form-navigation {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .organ-preview {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #e53935;
+        }
+
+        .organ-details-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.3rem;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #1a237e;
+        }
+
+        .blood-group-preview {
+            color: #e53935;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .urgency-badge {
+            background: #e53935;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: 1rem;
+        }
+
+        .payment-summary {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .summary-row.total {
+            border-bottom: none;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a237e;
+        }
+
+        .confirmation-message {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .confirmation-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-info {
+            background: #e3f2fd;
+            color: #1565c0;
+            border-left: 4px solid #1565c0;
+        }
+
+        .alert-warning {
+            background: #fff3e0;
+            color: #ef6c00;
+            border-left: 4px solid #ef6c00;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <span>OrganEase</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Available Organs</a></li>
+                <li><a href="request.html" class="active">Request Organ</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Request Form -->
+    <section class="request-container">
+        <div class="container">
+            <div class="request-header">
+                <h1>Organ Request Form</h1>
+                <p>Complete this form to request an organ for transplantation. All information is encrypted and secure.</p>
+            </div>
+
+            <div class="request-form-container">
+                <!-- Form Tabs -->
+                <div class="form-tabs">
+                    <div class="tab active" data-tab="patient">
+                        <i class="fas fa-user-injured"></i> Patient Details
+                    </div>
+                    <div class="tab" data-tab="organ">
+                        <i class="fas fa-lungs"></i> Organ Requirements
+                    </div>
+                    <div class="tab" data-tab="hospital">
+                        <i class="fas fa-hospital"></i> Hospital Information
+                    </div>
+                    <div class="tab" data-tab="payment">
+                        <i class="fas fa-credit-card"></i> Payment & Confirmation
+                    </div>
+                </div>
+
+                <!-- Form Sections -->
+                <form id="organRequestForm">
+                    <!-- Patient Details -->
+                    <div class="form-section active" id="patient-section">
+                        <h2>Patient Information</h2>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            <div>
+                                <strong>Privacy Note:</strong> Patient information is protected under HIPAA regulations and will only be shared with relevant medical personnel.
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="required">Patient Full Name</label>
+                                <input type="text" id="patientName" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="required">Patient ID/Registration Number</label>
+                                <input type="text" id="patientId" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="required">Age</label>
+                                <input type="number" id="patientAge" min="0" max="120" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="required">Blood Group</label>
+                                <select id="patientBloodGroup" required>
+                                    <option value="">Select Blood Group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="required">Gender</label>
+                                <select id="patientGender" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="required">Weight (kg)</label>
+                                <input type="number" id="patientWeight" step="0.1" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Medical History (Relevant Conditions)</label>
+                            <textarea id="medicalHistory" rows="3" placeholder="e.g., Diabetes, Hypertension, Previous surgeries..."></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <div></div>
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-secondary next-tab" data-next="organ">
+                                    Next: Organ Requirements <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Organ Requirements -->
+                    <div class="form-section" id="organ-section">
+                        <h2>Organ Specifications</h2>
+
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <strong>Critical:</strong> Verify all compatibility requirements before proceeding. Mismatch can lead to organ rejection.
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="required">Organ Type</label>
+                                <select id="organType" required>
+                                    <option value="">Select Organ</option>
+                                    <option value="heart">Heart</option>
+                                    <option value="kidney">Kidney</option>
+                                    <option value="liver">Liver</option>
+                                    <option value="lungs">Lungs</option>
+                                    <option value="pancreas">Pancreas</option>
+                                    <option value="cornea">Cornea</option>
+                                    <option value="intestine">Intestine</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="required">Urgency Level</label>
+                                <select id="urgencyLevel" required>
+                                    <option value="">Select Urgency</option>
+                                    <option value="critical">Critical (0-24 hours)</option>
+                                    <option value="urgent">Urgent (24-72 hours)</option>
+                                    <option value="standard">Standard (3-7 days)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Required Blood Group Compatibility</label>
+                                <select id="requiredBloodGroup">
+                                    <option value="">Same as patient or compatible</option>
+                                    <option value="exact">Exact match required</option>
+                                    <option value="compatible">Compatible groups accepted</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Maximum Donor Age</label>
+                                <input type="number" id="maxDonorAge" placeholder="Optional">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Additional Requirements</label>
+                            <textarea id="additionalRequirements" rows="3" placeholder="Any specific requirements or preferences..."></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-secondary prev-tab" data-prev="patient">
+                                    <i class="fas fa-arrow-left"></i> Back to Patient Details
+                                </button>
+                            </div>
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-secondary next-tab" data-next="hospital">
+                                    Next: Hospital Information <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hospital Information -->
+                    <div class="form-section" id="hospital-section">
+                        <h2>Hospital & Contact Information</h2>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="required">Hospital Name</label>
+                                <input type="text" id="hospitalName" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="required">Hospital Registration ID</label>
+                                <input type="text" id="hospitalId" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="required">Contact Person</label>
+                                <input type="text" id="contactPerson" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="required">Contact Person Designation</label>
+                                <input type="text" id="contactDesignation" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="required">Contact Email</label>
+                                <input type="email" id="contactEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="required">Contact Phone</label>
+                                <input type="tel" id="contactPhone" required>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="required">Hospital Address</label>
+                                <textarea id="hospitalAddress" rows="2" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>ICU/Transplant Unit Contact</label>
+                                <input type="text" id="icuContact">
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-secondary prev-tab" data-prev="organ">
+                                    <i class="fas fa-arrow-left"></i> Back to Organ Requirements
+                                </button>
+                            </div>
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-secondary next-tab" data-next="payment">
+                                    Next: Payment & Confirmation <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment & Confirmation -->
+                    <div class="form-section" id="payment-section">
+                        <h2>Payment & Final Confirmation</h2>
+
+                        <div class="organ-preview">
+                            <h3>Request Summary</h3>
+                            <div class="organ-details-preview">
+                                <div class="detail-item">
+                                    <div class="detail-label">Patient</div>
+                                    <div class="detail-value" id="previewPatientName">-</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Organ Type</div>
+                                    <div class="detail-value" id="previewOrganType">-</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Blood Group</div>
+                                    <div class="detail-value blood-group-preview" id="previewBloodGroup">-</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Urgency</div>
+                                    <div class="detail-value">
+                                        <span id="previewUrgency">-</span>
+                                        <span class="urgency-badge" id="urgencyBadge" style="display: none;">
+                                            <i class="fas fa-clock"></i> URGENT
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="payment-summary">
+                            <h3>Payment Summary</h3>
+                            <div class="summary-row">
+                                <span>Organ Processing Fee</span>
+                                <span>$2,500.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Transportation & Logistics</span>
+                                <span>$1,800.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Medical Coordination Fee</span>
+                                <span>$700.00</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total Amount</span>
+                                <span>$5,000.00</span>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            <div>
+                                <strong>Note:</strong> This payment serves as a token of confirmation for the transfer procedure. Full medical fees will be handled separately between institutions.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required">Payment Method</label>
+                            <select id="paymentMethod" required>
+                                <option value="">Select Payment Method</option>
+                                <option value="bank-transfer">Bank Transfer</option>
+                                <option value="credit-card">Credit Card</option>
+                                <option value="insurance-direct">Insurance Direct Billing</option>
+                                <option value="hospital-account">Hospital Account</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required">
+                                <input type="checkbox" id="termsAgreement" required>
+                                I confirm that all information provided is accurate and I agree to the terms of service
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required">
+                                <input type="checkbox" id="medicalConsent" required>
+                                I have obtained necessary medical consents and approvals for this procedure
+                            </label>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-secondary prev-tab" data-prev="hospital">
+                                    <i class="fas fa-arrow-left"></i> Back to Hospital Information
+                                </button>
+                            </div>
+                            <div class="form-navigation">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i> Submit Request & Proceed to Payment
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Confirmation Message (Hidden by default) -->
+                    <div class="form-section" id="confirmation-section" style="display: none;">
+                        <div class="confirmation-message">
+                            <div class="confirmation-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <h2>Request Submitted Successfully!</h2>
+                            <p>Your organ request has been received and is being processed.</p>
+                            <p><strong>Reference ID:</strong> <span id="referenceId">ORG-2023-876543</span></p>
+                            <div class="alert alert-info" style="margin: 2rem 0;">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <strong>Next Steps:</strong><br>
+                                    1. Procurement center will review your request within 1 hour<br>
+                                    2. You will receive a confirmation email<br>
+                                    3. Medical coordination team will contact you<br>
+                                    4. Organ transfer logistics will be arranged
+                                </div>
+                            </div>
+                            <div style="margin-top: 2rem;">
+                                <a href="dashboard.html" class="btn btn-secondary">
+                                    <i class="fas fa-search"></i> Browse More Organs
+                                </a>
+                                <a href="index.html" class="btn btn-primary">
+                                    <i class="fas fa-home"></i> Return to Home
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>OrganEase</span>
+                </div>
+                <p class="footer-tagline">Saving lives through efficient organ procurement</p>
+                <div class="footer-info">
+                    <p><i class="fas fa-phone"></i> Emergency Hotline: 1-800-ORGANS-NOW</p>
+                    <p><i class="fas fa-envelope"></i> Email: support@organease.org</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Available 24/7 Nationwide</p>
+                </div>
+                <p class="copyright">© 2023 OrganEase. All medical protocols followed as per national guidelines.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

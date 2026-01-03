@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - OrganEase</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .payment-container {
+            padding: 4rem 0;
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-success {
+            text-align: center;
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .payment-details {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <span>OrganEase</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Available Organs</a></li>
+                <li><a href="request.html">Request Organ</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Payment Success -->
+    <section class="payment-container">
+        <div class="container">
+            <div class="payment-success">
+                <div class="success-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h1>Payment Successful!</h1>
+                <p>Your payment has been processed and serves as confirmation for the organ transfer procedure.</p>
+                
+                <div class="payment-details">
+                    <div class="detail-item">
+                        <span>Reference Number:</span>
+                        <span>PAY-ORG-2023-876543</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Amount Paid:</span>
+                        <span>$5,000.00</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Payment Method:</span>
+                        <span>Bank Transfer</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Transaction Date:</span>
+                        <span>October 15, 2023 14:30 EST</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Status:</span>
+                        <span style="color: #4caf50;">Confirmed ✓</span>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Next Step:</strong> The procurement center will now process your request and contact you within 1 hour to arrange organ transfer logistics.
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;">
+                    <a href="confirmation.html" class="btn btn-primary">
+                        <i class="fas fa-file-alt"></i> View Confirmation
+                    </a>
+                    <a href="dashboard.html" class="btn btn-secondary">
+                        <i class="fas fa-search"></i> Browse More Organs
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>OrganEase</span>
+                </div>
+                <p class="footer-tagline">Saving lives through efficient organ procurement</p>
+                <div class="footer-info">
+                    <p><i class="fas fa-phone"></i> Emergency Hotline: 1-800-ORGANS-NOW</p>
+                    <p><i class="fas fa-envelope"></i> Email: support@organease.org</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Available 24/7 Nationwide</p>
+                </div>
+                <p class="copyright">© 2023 OrganEase. All medical protocols followed as per national guidelines.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
